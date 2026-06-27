@@ -73,6 +73,33 @@ export function useWallet() {
           const currentChainId = await window.ethereum.request({ method: 'eth_chainId' });
           setChainId(parseInt(currentChainId, 16));
           fetchBalance(prov, accounts[0]);
+          
+          // Auto switch to Monad Testnet if not on it
+          if (parseInt(currentChainId, 16) !== MONAD_TESTNET.chainId) {
+            try {
+              await window.ethereum.request({
+                method: 'wallet_switchEthereumChain',
+                params: [{ chainId: MONAD_TESTNET.chainIdHex }],
+              });
+              setChainId(MONAD_TESTNET.chainId);
+            } catch (switchError) {
+              if (switchError.code === 4902) {
+                await window.ethereum.request({
+                  method: 'wallet_addEthereumChain',
+                  params: [
+                    {
+                      chainId: MONAD_TESTNET.chainIdHex,
+                      chainName: MONAD_TESTNET.chainName,
+                      nativeCurrency: MONAD_TESTNET.nativeCurrency,
+                      rpcUrls: MONAD_TESTNET.rpcUrls,
+                      blockExplorerUrls: MONAD_TESTNET.blockExplorerUrls,
+                    },
+                  ],
+                });
+                setChainId(MONAD_TESTNET.chainId);
+              }
+            }
+          }
         }
       } catch (err) {
         setError(err.message);

@@ -76,7 +76,7 @@ export default function MapScreen({ theme, wallet, geo, game, onCatchStart }) {
       return;
     }
     const distance = geo.getDistance(geo.position.lat, geo.position.lng, spawn.position.lat, spawn.position.lng);
-    if (distance > 5) { // Hackathon için 5 metre tolerans koydum (1 metre GPS için çok dar)
+    if (distance > 20) { // Catch radius increased to 20 meters
       alert(`Çok uzaksın! MonAnimal senden ${Math.round(distance)} metre uzakta. Yaklaşmalısın!`);
       return;
     }

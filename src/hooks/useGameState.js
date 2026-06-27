@@ -20,13 +20,13 @@ function generateSpawns(center, count) {
   // Presentation Mode: 4 guaranteed monsters 
   for (let i = 0; i < 4; i++) {
     const mon = getRandomMonAnimal();
-    // Scatter around ~15-30 meters (0.00015 to 0.00030 degrees)
+    // Scatter around ~5-10 meters (0.00005 to 0.00010 degrees)
     const signLat = Math.random() > 0.5 ? 1 : -1;
     const signLng = Math.random() > 0.5 ? 1 : -1;
     
     const pos = {
-      lat: center.lat + signLat * (0.00015 + Math.random() * 0.00015),
-      lng: center.lng + signLng * (0.00015 + Math.random() * 0.00015),
+      lat: center.lat + signLat * (0.00005 + Math.random() * 0.00005),
+      lng: center.lng + signLng * (0.00005 + Math.random() * 0.00005),
     };
     spawns.push({
       id: `spawn-pres-${Date.now()}-${i}`,
