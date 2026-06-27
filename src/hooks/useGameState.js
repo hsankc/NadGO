@@ -206,6 +206,7 @@ export function useGameState() {
               caughtAt: Date.now(),
               lastCaughtAt: Date.now(),
               zone: 'Ankara',
+              equipment: [],
             },
           ];
         }
@@ -241,6 +242,43 @@ export function useGameState() {
     const mon = MONANIMALS.find((m) => m.id === monAnimalId);
     addActivity(`Fed ${mon?.name} +${powerBoost} power! 🍖`);
     return powerBoost;
+  }, []);
+
+  // Store Functions
+  const buyEquipment = useCallback((monAnimalId, equipment, cost, powerBoost) => {
+    setCollection((prev) =>
+      prev.map((c) =>
+        c.monAnimalId === monAnimalId
+          ? {
+              ...c,
+              power: c.power + powerBoost,
+              equipment: [...(c.equipment || []), equipment]
+            }
+          : c
+      )
+    );
+    addActivity(`Bought ${equipment} for ${cost} MON (+${powerBoost} Power)! 🛍️`);
+  }, []);
+
+  const buyPower = useCallback((monAnimalId, powerBoost, cost) => {
+    setCollection((prev) =>
+      prev.map((c) =>
+        c.monAnimalId === monAnimalId
+          ? { ...c, power: c.power + powerBoost }
+          : c
+      )
+    );
+    addActivity(`Bought +${powerBoost} Power for ${cost} MON! ⚡`);
+  }, []);
+
+  const convertScoreToMon = useCallback((scoreCost, monGain) => {
+    setPlayerStats(prev => {
+      if (prev.score >= scoreCost) {
+        addActivity(`Converted ${scoreCost} Score to ${monGain} MON! 💱`);
+        return { ...prev, score: prev.score - scoreCost };
+      }
+      return prev;
+    });
   }, []);
 
   // Scanner Claim Power
@@ -394,5 +432,8 @@ export function useGameState() {
     addBadge,
     claimBadgePower,
     claimBadgeMon,
+    buyEquipment,
+    buyPower,
+    convertScoreToMon,
   };
 }

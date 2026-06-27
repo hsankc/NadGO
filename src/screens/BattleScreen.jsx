@@ -22,6 +22,7 @@ export default function BattleScreen({ wallet, game }) {
     setBattleResult({
       ...result,
       myMonData: MONANIMALS.find((m) => m.id === result.myMonAnimalId),
+      myEquipment: selectedMon.equipment || [],
       oppMonData: MONANIMALS.find((m) => m.id === result.opponentMonAnimalId),
     });
 
@@ -81,7 +82,7 @@ export default function BattleScreen({ wallet, game }) {
               }}
             />
             <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 18, fontWeight: 700 }}>
-              {battleResult.myMonData.name}
+              {battleResult.myMonData.name} {battleResult.myEquipment.map(e => e.split(' ')[0]).join('')}
             </h3>
             <div style={{
               fontFamily: 'var(--font-display)',
@@ -215,7 +216,7 @@ export default function BattleScreen({ wallet, game }) {
                       alt={item.monData.name}
                       className="mon-card-image"
                     />
-                    <div className="mon-card-name">{item.monData.name}</div>
+                    <div className="mon-card-name">{item.monData.name} {(item.equipment || []).map(e => e.split(' ')[0]).join('')}</div>
                     <div className="mon-card-stats">
                       <span className="mon-card-stat">⚡ {item.power}</span>
                     </div>

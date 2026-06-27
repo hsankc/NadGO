@@ -116,7 +116,7 @@ export default function LibraryScreen({ wallet, game }) {
                   fontWeight: 600,
                   fontFamily: 'var(--font-display)',
                 }}>
-                  {caught ? mon.name : '???'}
+                  {caught ? mon.name : '???'} {caught && (caught.equipment || []).map(e => e.split(' ')[0]).join('')}
                 </div>
               </div>
             );
@@ -171,7 +171,7 @@ export default function LibraryScreen({ wallet, game }) {
               fontWeight: 800,
               marginBottom: 4,
             }}>
-              {selectedMon.monData.name}
+              {selectedMon.monData.name} {(selectedMon.equipment || []).map(e => e.split(' ')[0]).join('')}
             </h2>
 
             <div className={`rarity-badge ${rarityClass(selectedMon.monData.rarity)}`}

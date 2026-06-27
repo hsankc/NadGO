@@ -1,12 +1,47 @@
 import { useState, useEffect } from 'react';
 import { Scanner } from '@yudiel/react-qr-scanner';
+import { ethers } from 'ethers';
+import { MONANIMALS } from '../config/monanimals';
+
+const TREASURY_ADDRESS = "0x742d35Cc6634C0532925a3b844Bc454e4438f44e";
 
 export default function ProfileScreen({ wallet, game }) {
   const [isScanning, setIsScanning] = useState(false);
   const [claimedPower, setClaimedPower] = useState(() => localStorage.getItem('nadgo-claimed-power') === 'true');
   const [claimedMon, setClaimedMon] = useState(() => localStorage.getItem('nadgo-claimed-mon') === 'true');
+  const [selectedStoreMon, setSelectedStoreMon] = useState('');
 
   const { playerStats, badges, addBadge, claimBadgePower, claimBadgeMon } = game;
+
+  const handleBuyItem = async (type, cost, power) => {
+    if (!selectedStoreMon) {
+      alert("Please select a MonAnimal first!");
+      return;
+    }
+    if (!wallet.isConnected || !wallet.signer) {
+      alert("Please connect your wallet first!");
+      return;
+    }
+
+    try {
+      const tx = await wallet.signer.sendTransaction({
+        to: TREASURY_ADDRESS,
+        value: ethers.parseEther(cost.toString())
+      });
+      await tx.wait();
+      wallet.fetchBalance();
+
+      if (type === 'Power Boost') {
+        game.buyPower(selectedStoreMon, power, cost);
+      } else {
+        game.buyEquipment(selectedStoreMon, type, cost, power);
+      }
+      alert(`Successfully purchased ${type}!`);
+    } catch (e) {
+      console.error(e);
+      alert("Transaction failed or cancelled");
+    }
+  };
 
   const handleScanClick = () => {
     setIsScanning(!isScanning);
@@ -97,6 +132,66 @@ export default function ProfileScreen({ wallet, game }) {
         <div style={{ background: 'var(--bg-card)', padding: 16, borderRadius: 'var(--radius-lg)', border: '1px solid var(--glass-border)', textAlign: 'center' }}>
           <div style={{ fontSize: 24, fontWeight: 'bold', color: 'var(--danger)' }}>{playerStats.losses}</div>
           <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>Battle Losses</div>
+        </div>
+      </div>
+
+      {/* Monad Store Section */}
+      <div style={{ marginBottom: 32 }}>
+        <h3 style={{ fontSize: 18, color: 'var(--text-secondary)', marginBottom: 16 }}>Monad Store 🛒</h3>
+        
+        {/* Score to MON Converter */}
+        <div className="glass-card" style={{ padding: 16, marginBottom: 16, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div>
+            <h4 style={{ margin: 0, fontSize: 16 }}>Score to MON</h4>
+            <p style={{ margin: 0, fontSize: 12, color: 'var(--text-muted)' }}>Convert 100 Score to 0.05 Testnet MON</p>
+          </div>
+          <button 
+            className="btn btn-primary" 
+            onClick={() => {
+              if (game.playerStats.score >= 100) {
+                game.convertScoreToMon(100, 0.05);
+                alert("Simulated: 100 Score converted to 0.05 MON!");
+              } else {
+                alert("Not enough score!");
+              }
+            }}
+            disabled={game.playerStats.score < 100}
+            style={{ padding: '8px 16px' }}
+          >
+            Convert 💱
+          </button>
+        </div>
+
+        {/* Equipment Shop */}
+        <div className="glass-card" style={{ padding: 16 }}>
+          <h4 style={{ margin: '0 0 16px 0', fontSize: 16 }}>Buy Equipment & Power</h4>
+          
+          <select 
+            value={selectedStoreMon} 
+            onChange={(e) => setSelectedStoreMon(e.target.value)}
+            style={{ width: '100%', padding: 12, marginBottom: 16, borderRadius: 8, background: 'var(--bg-primary)', color: 'white', border: '1px solid var(--glass-border)' }}
+          >
+            <option value="">-- Select a MonAnimal --</option>
+            {game.collection.map(c => {
+              const data = MONANIMALS.find(m => m.id === c.monAnimalId);
+              return <option key={c.id} value={c.monAnimalId}>{data.name} (Power: {c.power})</option>
+            })}
+          </select>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+            <button className="btn btn-secondary" onClick={() => handleBuyItem('🎩 Hat', 0.05, 10)}>
+              🎩 Hat (+10)<br/>0.05 MON
+            </button>
+            <button className="btn btn-secondary" onClick={() => handleBuyItem('⚔️ Sword', 0.1, 25)}>
+              ⚔️ Sword (+25)<br/>0.1 MON
+            </button>
+            <button className="btn btn-secondary" onClick={() => handleBuyItem('🪓 Axe', 0.2, 50)}>
+              🪓 Axe (+50)<br/>0.2 MON
+            </button>
+            <button className="btn btn-secondary" onClick={() => handleBuyItem('Power Boost', 0.05, 20)}>
+              ⚡ +20 Power<br/>0.05 MON
+            </button>
+          </div>
         </div>
       </div>
 
