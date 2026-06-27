@@ -992,9 +992,22 @@ input:focus, textarea:focus, select:focus {
 }
 
 @keyframes coin-throw {
-  0% { transform: translateY(0) scale(1); opacity: 1; }
-  50% { transform: translateY(-300px) scale(0.6); opacity: 0.8; }
-  100% { transform: translateY(-400px) scale(0.3); opacity: 0; }
+  0% { 
+    transform: translateY(0) scale(1) rotateX(0deg) rotateY(0deg) rotateZ(0deg); 
+    opacity: 1; 
+  }
+  40% { 
+    transform: translateY(-250px) scale(0.7) rotateX(450deg) rotateY(180deg) rotateZ(30deg); 
+    opacity: 1; 
+  }
+  70% { 
+    transform: translateY(-380px) scale(0.4) rotateX(900deg) rotateY(360deg) rotateZ(60deg); 
+    opacity: 0.9; 
+  }
+  100% { 
+    transform: translateY(-450px) scale(0.1) rotateX(1260deg) rotateY(540deg) rotateZ(90deg); 
+    opacity: 0; 
+  }
 }
 
 @keyframes particle-burst {
