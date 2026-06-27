@@ -17,16 +17,16 @@ function randomSpawn(center, radiusMeters) {
 function generateSpawns(center, count) {
   const spawns = [];
   
-  // Presentation Mode: 4 guaranteed monsters 
-  for (let i = 0; i < 4; i++) {
-    const mon = getRandomMonAnimal();
-    // Scatter around ~5-10 meters (0.00005 to 0.00010 degrees)
+  // Presentation Mode: Spawn 1 of every single MonAnimal nearby
+  for (let i = 0; i < MONANIMALS.length; i++) {
+    const mon = MONANIMALS[i];
+    // Scatter around ~5-15 meters (0.00005 to 0.00015 degrees)
     const signLat = Math.random() > 0.5 ? 1 : -1;
     const signLng = Math.random() > 0.5 ? 1 : -1;
     
     const pos = {
-      lat: center.lat + signLat * (0.00005 + Math.random() * 0.00005),
-      lng: center.lng + signLng * (0.00005 + Math.random() * 0.00005),
+      lat: center.lat + signLat * (0.00005 + Math.random() * 0.00010),
+      lng: center.lng + signLng * (0.00005 + Math.random() * 0.00010),
     };
     spawns.push({
       id: `spawn-pres-${Date.now()}-${i}`,
@@ -38,7 +38,7 @@ function generateSpawns(center, count) {
   }
 
   // Generate the rest randomly in the 2km radius
-  for (let i = 4; i < count; i++) {
+  for (let i = MONANIMALS.length; i < count; i++) {
     const mon = getRandomMonAnimal();
     const pos = randomSpawn(center, HACKATHON_CENTER.radius);
     spawns.push({
