@@ -208,6 +208,50 @@ export function useGameState() {
     return powerBoost;
   }, []);
 
+  // Scanner Claim Power
+  const claimScannerPower = useCallback((monId, powerPoints) => {
+    const mon = MONANIMALS.find((m) => m.id === monId);
+    if (!mon) return;
+    
+    setCollection((prev) => {
+      const exists = prev.find(c => c.monAnimalId === monId);
+      if (exists) {
+        return prev.map((c) =>
+          c.monAnimalId === monId
+            ? { ...c, power: c.power + powerPoints }
+            : c
+        );
+      } else {
+        return [
+          ...prev,
+          {
+            id: `catch-${Date.now()}`,
+            monAnimalId: mon.id,
+            power: mon.basePower + powerPoints,
+            hp: mon.baseHp,
+            speed: mon.baseSpeed,
+            catchCount: 1,
+            caughtAt: Date.now(),
+            lastCaughtAt: Date.now(),
+            zone: 'Scanner',
+          },
+        ];
+      }
+    });
+
+    const hasMon = collection.find(c => c.monAnimalId === monId);
+    if (hasMon) {
+      addActivity(`Claimed +${powerPoints} power for your ${mon.name} from Scanner! ⚡`);
+    } else {
+      setPlayerStats((prev) => ({
+        ...prev,
+        totalCatches: prev.totalCatches + 1,
+        score: prev.score + 10 * RARITY_MULTIPLIER[mon.rarity],
+      }));
+      addActivity(`Found a new ${mon.name} from Scanner with +${powerPoints} bonus power! 🎉`);
+    }
+  }, [collection]);
+
   // Battle
   const doBattle = useCallback((myMonId, opponentCollection) => {
     const myMon = collection.find((c) => c.monAnimalId === myMonId);

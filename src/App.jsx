@@ -8,6 +8,7 @@ import LibraryScreen from './screens/LibraryScreen';
 import BattleScreen from './screens/BattleScreen';
 import LeaderboardScreen from './screens/LeaderboardScreen';
 import OnboardingScreen from './screens/OnboardingScreen';
+import ScannerScreen from './screens/ScannerScreen';
 
 const SCREENS = {
   MAP: 'map',
@@ -48,6 +49,8 @@ export default function App() {
   });
   const [catchingSpawn, setCatchingSpawn] = useState(null);
 
+  const [isScanning, setIsScanning] = useState(false);
+
   const wallet = useWallet();
   const geo = useGeolocation();
   const game = useGameState();
@@ -73,6 +76,14 @@ export default function App() {
     setCatchingSpawn(null);
   };
 
+  const handleScanStart = () => {
+    setIsScanning(true);
+  };
+
+  const handleScanEnd = () => {
+    setIsScanning(false);
+  };
+
   // Show onboarding
   if (showOnboarding) {
     return (
@@ -95,6 +106,17 @@ export default function App() {
     );
   }
 
+  // Show scanner screen
+  if (isScanning) {
+    return (
+      <ScannerScreen
+        wallet={wallet}
+        game={game}
+        onClose={handleScanEnd}
+      />
+    );
+  }
+
   return (
     <div className="app-container">
       <div className="screen-container">
@@ -105,6 +127,7 @@ export default function App() {
             geo={geo}
             game={game}
             onCatchStart={handleCatchStart}
+            onScanStart={handleScanStart}
           />
         )}
         {activeScreen === SCREENS.LIBRARY && (

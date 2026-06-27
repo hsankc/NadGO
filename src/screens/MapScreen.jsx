@@ -261,6 +261,30 @@ export default function MapScreen({ theme, wallet, geo, game, onCatchStart }) {
           }}
         />
       </MapContainer>
+      {/* Scan Mascot Button */}
+      <button
+        onClick={onScanStart}
+        style={{
+          position: 'absolute',
+          bottom: 24,
+          right: 24,
+          zIndex: 1000,
+          background: 'linear-gradient(135deg, var(--monad-purple), var(--monad-glow))',
+          color: '#fff',
+          border: 'none',
+          borderRadius: 30,
+          padding: '12px 24px',
+          fontWeight: 'bold',
+          fontSize: 16,
+          boxShadow: 'var(--glow-lg)',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 8,
+          cursor: 'pointer'
+        }}
+      >
+        <span>📷</span> Scan Mascot
+      </button>
     </div>
   );
 }
