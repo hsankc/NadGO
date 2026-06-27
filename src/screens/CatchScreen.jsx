@@ -37,7 +37,12 @@ export default function CatchScreen({ spawn, game, wallet, onClose }) {
     };
 
     if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
-      setNeedsPermission(true);
+      const alreadyGranted = localStorage.getItem('nadgo-permissions-granted') === 'true';
+      if (alreadyGranted) {
+        window.addEventListener('deviceorientation', handleOrientation);
+      } else {
+        setNeedsPermission(true);
+      }
     } else {
       window.addEventListener('deviceorientation', handleOrientation);
     }
