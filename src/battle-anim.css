@@ -1,22 +1,22 @@
 /* src/battle-anim.css */
 @keyframes battle-slide-left {
-  0% { transform: translateX(-150px) scale(0.8); opacity: 0; }
-  30% { transform: translateX(20px) scale(1.1); opacity: 1; }
-  40% { transform: translateX(0) scale(1); }
-  45% { transform: translateX(40px) scale(1.05) rotate(5deg); } /* Clash! */
-  50% { transform: translateX(-15px) scale(1) rotate(-2deg); }
-  60% { transform: translateX(0) scale(1) rotate(0deg); }
-  100% { transform: translateX(0) scale(1); }
+  0% { transform: translateY(-150px) scale(0.8); opacity: 0; }
+  30% { transform: translateY(20px) scale(1.1); opacity: 1; }
+  40% { transform: translateY(0) scale(1); }
+  45% { transform: translateY(120px) scale(1.05) rotate(5deg); } /* Clash down! */
+  50% { transform: translateY(-15px) scale(1) rotate(-2deg); }
+  60% { transform: translateY(0) scale(1) rotate(0deg); }
+  100% { transform: translateY(0) scale(1); }
 }
 
 @keyframes battle-slide-right {
-  0% { transform: translateX(150px) scale(0.8); opacity: 0; }
-  30% { transform: translateX(-20px) scale(1.1); opacity: 1; }
-  40% { transform: translateX(0) scale(1); }
-  45% { transform: translateX(-40px) scale(1.05) rotate(-5deg); } /* Clash! */
-  50% { transform: translateX(15px) scale(1) rotate(2deg); }
-  60% { transform: translateX(0) scale(1) rotate(0deg); }
-  100% { transform: translateX(0) scale(1); }
+  0% { transform: translateY(150px) scale(0.8); opacity: 0; }
+  30% { transform: translateY(-20px) scale(1.1); opacity: 1; }
+  40% { transform: translateY(0) scale(1); }
+  45% { transform: translateY(-120px) scale(1.05) rotate(-5deg); } /* Clash up! */
+  50% { transform: translateY(15px) scale(1) rotate(2deg); }
+  60% { transform: translateY(0) scale(1) rotate(0deg); }
+  100% { transform: translateY(0) scale(1); }
 }
 
 @keyframes hit-flash {
