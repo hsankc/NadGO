@@ -298,9 +298,15 @@ export function useGameState() {
     // Generate opponent
     const opponent = opponentCollection || (() => {
       const oppMon = getRandomMonAnimal();
+      
+      // Scale opponent power to be close to the player's MonAnimal (+- 15%)
+      const variance = Math.floor(myMon.power * 0.15); 
+      const randomOffset = Math.floor(Math.random() * (variance * 2 + 1)) - variance;
+      const balancedPower = Math.max(oppMon.basePower, myMon.power + randomOffset);
+
       return {
         monAnimalId: oppMon.id,
-        power: oppMon.basePower + Math.floor(Math.random() * 30),
+        power: balancedPower,
         catchCount: 1 + Math.floor(Math.random() * 5),
       };
     })();
