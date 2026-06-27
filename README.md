@@ -3,84 +3,111 @@
   <h1>🎮 Monad Go</h1>
   <p><b>Gotta Catch 'em All on Monad! A location-based Web3 monster-catching AR game.</b></p>
   <p>Built for the <b>Ankara Hackathon</b> ⚡</p>
+
+  <div>
+    <img src="https://img.shields.io/badge/Blockchain-Monad-836EF9?style=for-the-badge" alt="Monad" />
+    <img src="https://img.shields.io/badge/Frontend-React-61DAFB?style=for-the-badge&logo=react" alt="React" />
+    <img src="https://img.shields.io/badge/Web3-Ethers.js-3C3C3D?style=for-the-badge&logo=ethereum" alt="Web3" />
+    <img src="https://img.shields.io/badge/Tech-AR%20%26%20Geolocation-FF6B6B?style=for-the-badge" alt="AR" />
+  </div>
 </div>
 
----
+<br/>
 
-## 🌟 About The Project
+## 🌟 The Vision
 
-**Monad Go** is a next-generation, location-based Web3 game inspired by Pokémon GO. Players explore the real world to find legendary **MonAnimals**, catch them using augmented reality (AR) and physical device movements, and build their ultimate NFT collection on the lightning-fast **Monad** blockchain.
+**Monad Go** bridges the gap between Web3 and the physical world. Inspired by the cultural phenomenon of Pokémon GO, we created a game where players explore their real-life surroundings to hunt, catch, and collect **MonAnimals** as NFTs on the **Monad blockchain**.
 
-We bring the real world and Web3 together by utilizing mobile sensors (GPS, Camera, Gyroscope) and seamless wallet integrations.
-
----
-
-## 📱 User Flow & Features (Screen by Screen)
-
-### 1. Onboarding & Wallet Connection 🔐
-When a user opens Monad Go, they are greeted with a sleek onboarding flow. 
-- **Mandatory Wallet Connection:** Players must connect their Web3 wallet to start. This ensures every user has a unique, isolated account.
-- **Data Isolation:** All local storage data is prefix-isolated using the wallet address, meaning multiple users can play on the same device without mixing up their collections!
-- *Image Reference: `![Onboarding & Wallet](./foto/IMG_8247.PNG)` (Replace with your onboarding screenshot)*
-
-### 2. Permissions Screen 📸📍
-To provide a true AR experience, Monad Go requires real-world sensors.
-- **Camera Access:** Used for the AR catching background.
-- **Location (GPS):** Used to place the player accurately on the world map.
-- **Gyroscope:** Used to map the physical tilt of the phone to the virtual AR world.
-- *Image Reference: `![Permissions](./foto/IMG_8248.PNG)`*
-
-### 3. The Map Screen 🗺️
-The core exploration hub.
-- Powered by `Leaflet.js`, the map tracks your real-time GPS location.
-- **MonAnimals** spawn randomly around your physical location in a 2km radius.
-- Players tap on a nearby MonAnimal to initiate the Catch Phase.
-- *Image Reference: `![Map Screen](./foto/IMG_8249.PNG)`*
-
-### 4. Catching Phase (AR & Physics) 🎯
-This is where the magic happens!
-- **AR Background:** Your device's camera stream is used as the background.
-- **Gyroscope Targeting:** The MonAnimal moves on the screen based on how you tilt and move your phone physically (using `DeviceOrientationEvent`).
-- **Throwing Mechanics:** Players swipe up to throw a physical Monad Coin. The throw speed and angle affect the trajectory with 3D CSS transforms!
-- **Micro-Transactions:** Every throw sends a micro-transaction of `0.01 MON` to the Treasury. Powered by Monad's fast block times, this feels instant!
-- *Image Reference: `![Catching AR Phase](./foto/IMG_8250.PNG)`*
-
-### 5. Catch Result ✨
-Did you catch it or did it escape?
-- If the catch is successful, the MonAnimal is minted into your Collection as a new NFT!
-- If you already own it, you get a **Power-Up** (+5 to +15 Power) and Catch Count increases.
-- If it escapes, your catch chance increases by +25% for the next try.
-- *Image Reference: `![Catch Result](./foto/IMG_8251.PNG)`*
-
-### 6. Collection (Pokedex) 🎒
-View all your caught MonAnimals in the Collection tab.
-- Displays Rarity, Base Power, HP, and Speed.
-- **Rarities:** Legendary, Rare, Uncommon, Common.
-- Smooth glass-morphism UI with rarity-based neon glows.
-- *Image Reference: `![Collection](./foto/IMG_8252.jpg)`*
-
-### 7. Profile & Social Quests 🏅
-Players can track their stats and earn extra scores.
-- **Stats:** Total Catches, Total Score, Wallet Balance.
-- **Social Quests:** 
-  - Connect X (Twitter) for +20 Score.
-  - Share the app on X for +20 Score.
-- *Image Reference: `![Profile & Quests](./foto/IMG_8254.jpg)`*
-
-### 8. Viral QR Code Sharing 📲
-Built for the Hackathon Pitch!
-- In the Profile screen, tapping "Share App" opens a giant QR code modal.
-- The presenter can display this on the big screen, and the audience can scan it to instantly open the game and connect their wallets!
-- *Image Reference: `![QR Code Share](./foto/IMG_8255.jpg)`*
+Why Monad? Because real-time AR gaming requires **instant micro-transactions**. Every time a player throws a coin to catch a MonAnimal, they send `0.01 MON` to the treasury. On traditional chains, this would ruin the gameplay loop. On Monad, the extreme throughput and sub-second finality make blockchain interactions feel entirely frictionless.
 
 ---
 
-## 🛠️ Tech Stack
-- **Frontend:** React, Vite, CSS Modules (Custom Neon Design System)
-- **Web3:** ethers.js, MetaMask SDK
-- **Map & Geospatial:** Leaflet.js
-- **AR & Sensors:** HTML5 Geolocation API, MediaDevices API (Camera), DeviceOrientation API (Gyroscope)
-- **Deployment:** Vercel
+## 🔥 Key Features
+
+- 🌍 **Real-World Map Exploration:** Using HTML5 Geolocation and `Leaflet.js`, players navigate a stylized map synced with their physical location. MonAnimals spawn dynamically in a 2km radius!
+- 📸 **Augmented Reality (AR) Catching:** We tap into the device's Camera and Gyroscope (`DeviceOrientationEvent`). Move your phone physically to aim at the MonAnimal!
+- 🪙 **Physics-Based Coin Throwing:** Swipe up to throw a Monad Coin! The trajectory, speed, and 3D wobble are calculated in real-time based on your swipe velocity.
+- ⚡ **Frictionless Micro-Transactions:** Catching costs `0.01 MON`. The transaction confirms in milliseconds, allowing the game to proceed instantly.
+- 🎒 **NFT Collection & Power-Ups:** Catching duplicates doesn't waste them—it powers up your existing MonAnimal!
+- 🚀 **Viral Social Quests:** Connect your X (Twitter) account and share your catches to earn bonus scores. Plus, a built-in QR Code generator lets presenters onboard audiences instantly during pitches!
+
+---
+
+## 📱 Visual Walkthrough
+
+Here is the complete user journey of Monad Go, from onboarding to building your ultimate collection:
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="foto/IMG_8247.PNG" width="220" />
+      <br/><b>1. Onboarding & Wallet</b><br/>Players must connect their Web3 wallet. Local data is isolated per wallet address!
+    </td>
+    <td align="center">
+      <img src="foto/IMG_8248.PNG" width="220" />
+      <br/><b>2. Sensor Permissions</b><br/>We request Camera, GPS, and Gyroscope access to enable the AR experience.
+    </td>
+    <td align="center">
+      <img src="foto/IMG_8249.PNG" width="220" />
+      <br/><b>3. Map Exploration</b><br/>Real-time GPS tracking. MonAnimals spawn dynamically around your location.
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="foto/IMG_8250.PNG" width="220" />
+      <br/><b>4. AR Catch Phase</b><br/>Use your physical camera and tilt your phone to find the MonAnimal.
+    </td>
+    <td align="center">
+      <img src="foto/IMG_8251.PNG" width="220" />
+      <br/><b>5. Throwing the Coin</b><br/>Swipe up to throw! Costs 0.01 MON. Powered by frictionless Monad txs.
+    </td>
+    <td align="center">
+      <img src="foto/IMG_8252.jpg" width="220" />
+      <br/><b>6. Catch Result</b><br/>Did it escape, or did you catch it? Catch chances increase upon failure!
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="foto/IMG_8254.jpg" width="220" />
+      <br/><b>7. The Collection</b><br/>Your personal Pokedex! View stats, rarity, and power levels of your NFTs.
+    </td>
+    <td align="center">
+      <img src="foto/IMG_8255.jpg" width="220" />
+      <br/><b>8. Player Profile</b><br/>Track total catches, your MON balance, and your overall trainer score.
+    </td>
+    <td align="center">
+      <img src="foto/IMG_8257.PNG" width="220" />
+      <br/><b>9. Social Quests</b><br/>Connect and share on X (Twitter) to earn +20 bonus score points.
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="foto/IMG_8258.PNG" width="220" />
+      <br/><b>10. Hackathon Ready</b><br/>Custom UI designed to look sleek, neon, and totally Web3 native.
+    </td>
+    <td align="center">
+      <img src="foto/IMG_8259.PNG" width="220" />
+      <br/><b>11. Multi-tenant</b><br/>Log out and log in with a new wallet, and get a fresh new account instantly.
+    </td>
+    <td align="center">
+      <img src="foto/IMG_8260.jpg" width="220" />
+      <br/><b>12. Viral QR Sharing</b><br/>Share the DApp directly from your phone to onboard friends!
+    </td>
+  </tr>
+</table>
+
+---
+
+## 🛠️ Architecture & Tech Stack
+
+- **Frontend:** React.js powered by Vite for blazing fast HMR.
+- **Styling:** Custom CSS modules utilizing a unified Design System (Neon Purple / Cyberpunk aesthetic). No heavy component libraries, ensuring maximum performance on mobile.
+- **State Management:** Custom React Hooks (`useGameState`) handling complex isolated states for different wallet addresses.
+- **Web3 Provider:** `ethers.js` connected directly to the Monad RPC for signing transactions.
+- **Maps:** `react-leaflet` with CartoDB Dark Matter tiles for that sleek dark-mode look.
+- **AR Engine:** Native browser APIs (`navigator.mediaDevices`, `DeviceOrientationEvent`) manipulated via React refs and inline CSS 3D Transforms for a lightweight, dependency-free AR engine!
+
+---
 
 ## 🚀 How to Run Locally
 
@@ -88,16 +115,24 @@ Built for the Hackathon Pitch!
 ```bash
 git clone https://github.com/hsankc/NadGO.git
 ```
+
 2. Install dependencies:
 ```bash
 npm install
 ```
+
 3. Run the development server:
 ```bash
 npm run dev
 ```
 
-*Note: For the Camera and Gyroscope to work locally on a mobile device, you must serve the app over HTTPS or use a tunneling service like LocalTunnel/Ngrok.*
+*⚠️ **Important for Local Mobile Testing:** The Camera and Gyroscope APIs require a Secure Context (HTTPS). If testing on your mobile phone via local network, you must use a tunneling service like [localtunnel](https://localtunnel.me/) or `ngrok`.*
+
+```bash
+npx localtunnel --port 5173
+```
 
 ---
-*Developed with 💜 for the Monad Ecosystem.*
+<div align="center">
+  <i>Developed with 💜 for the Monad Ecosystem.</i>
+</div>
