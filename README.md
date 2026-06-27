@@ -28,116 +28,114 @@ For years, Web3 gaming has struggled with a massive bottleneck: **Friction**. Tr
 
 **Enter Monad Go.**
 
-We are bridging the gap between the physical world and the digital Web3 ecosystem. Inspired by the cultural phenomenon of Pokémon GO, we created a game where players actually have to step outside, explore their physical surroundings using GPS, and hunt down legendary **MonAnimals** as NFTs.
+We are bridging the gap between the physical world and the digital Web3 ecosystem. Inspired by the cultural phenomenon of Pokémon GO, we created a game where players actually have to step outside, explore their physical surroundings using GPS, hunt down legendary **MonAnimals**, and battle other trainers!
 
 ### ⚡ Why Monad? (The Ecosystem Impact)
 **Monad Go** is a love letter to the Monad ecosystem. It showcases exactly why Monad's architecture is a game-changer:
 1. **Instant Micro-Transactions:** In Monad Go, *every single time* a player throws a coin to catch a monster, an on-chain transaction of `0.01 MON` is executed. On any other EVM chain, this would completely ruin the immersion. On Monad, the extreme parallel execution and sub-second finality make the transaction feel **instant**.
-2. **Mass Onboarding (SocialFi):** By integrating viral QR sharing and X (Twitter) social quests, Monad Go is designed to be an onboarding funnel. It brings non-crypto natives into the Monad ecosystem through the universal appeal of gaming.
-3. **True Ownership:** Every caught MonAnimal isn't just a database entry; it's a verifiable asset on the fastest blockchain in the world.
+2. **Mass Onboarding (SocialFi):** By integrating viral quests and real-world event QR scanning, Monad Go is designed to be an onboarding funnel. It brings non-crypto natives into the Monad ecosystem through the universal appeal of gaming.
+3. **True Ownership & Economy:** Every caught MonAnimal is yours. Buy equipment (swords, hats), battle others, and convert your hard-earned Trainer Score back into testnet MON!
 
 ---
 
 ## 📸 Step-by-Step Interactive Walkthrough
 
-We have meticulously crafted every screen of Monad Go to provide a AAA mobile experience in the browser. Here is the complete journey of a player:
+We have meticulously crafted every screen of Monad Go to provide a AAA mobile experience in the browser. Here is the complete journey of a player, step by step:
 
-### 1. The Gateway (Onboarding)
+### 1. The Gateway (Welcome & Lore)
 <div align="center">
-  <img src="foto/IMG_8247.PNG" width="300" />
+  <img src="foto/1.PNG" width="300" />
 </div>
-When a user opens Monad Go, they are greeted with a sleek, cyberpunk-inspired onboarding flow. This screen introduces them to the Monad Go universe, immediately setting the high-quality visual tone with smooth glass-morphism UI.
+When a user opens Monad Go, they are greeted with a sleek, cyberpunk-inspired onboarding flow. This screen introduces the 7 Legendary MonAnimals and sets the ultimate goal: Catch, Battle, and Collect on the fastest EVM chain.
 
 <br/>
 
-### 2. The Lore
+### 2. Web3 Identity (Connect Wallet)
+<div align="center">
+  <img src="foto/2.PNG" width="300" />
+</div>
+We enforce a strict Web3-first approach. Players must connect their MetaMask to start minting caught MonAnimals.
+*Technical Flex:* The app uses the wallet address to strictly isolate local storage data, meaning multiple users can play on the exact same physical device seamlessly.
+
+<br/>
+
+### 3. The Monad World Map (Explore)
+<div align="center">
+  <img src="foto/3.PNG" width="300" />
+</div>
+The core exploration hub. Powered by real-time GPS tracking, players see themselves on a stylized dark-mode map of the real world. A radar pulses around you, showing exactly which MonAnimals are within catching distance. Time to walk!
+
+<br/>
+
+### 4. AR Catch Mode (Micro-Transaction Physics)
+<div align="center">
+  <img src="foto/4.PNG" width="300" />
+</div>
+Once a player taps a nearby MonAnimal, they enter AR Catch Mode. Using the device's camera, the monster appears in the real world. Players swipe up to physically throw a Monad Coin. At the exact moment of the throw, a `0.01 MON` transaction is executed instantly!
+
+<br/>
+
+### 5. Your NFT Pokedex (Library)
 <div align="center">
   <img src="foto/IMG_8248.PNG" width="300" />
 </div>
-Players learn about their objective: The 7 Legendary MonAnimals have escaped into the real world. This step builds excitement and gives the player a clear goal before they even connect their wallet.
+A gorgeous, tabbed grid of your hard-earned assets. MonAnimals are sorted by rarity (Common, Uncommon, Rare, Epic, Legendary). You can see undiscovered silhouettes in the MonAnimal Index, driving the urge to "catch 'em all".
 
 <br/>
 
-### 3. Web3 Identity (Mandatory Wallet Connection)
+### 6. The Battle Arena (Choose Your Fighter)
 <div align="center">
   <img src="foto/IMG_8249.PNG" width="300" />
 </div>
-We enforce a strict Web3-first approach. Players **must** connect their Web3 wallet to proceed. 
-*Technical Flex:* The app uses the wallet address to strictly isolate local storage data. This means multiple users can play on the exact same physical device, and each wallet will load its own unique collection and game state perfectly.
+It's not just about collecting—it's about dominance. In the Battle Arena, players select their strongest MonAnimal (based on Base Power) to go head-to-head against other trainers on the network.
 
 <br/>
 
-### 4. Bridging Realities (Sensor Permissions)
+### 7. Sweet Victory (Battle Result)
 <div align="center">
   <img src="foto/IMG_8250.PNG" width="300" />
 </div>
-To blur the lines between the game and reality, Monad Go requests access to the device's **Camera**, **Location (GPS)**, and **Gyroscope**. These aren't gimmicks—they are the core engines of our AR experience.
+The adrenaline rush of a win! Defeating an opponent grants you massive Trainer Score boosts (+50 Score). The more you battle, the higher you climb.
 
 <br/>
 
-### 5. The Monad World Map
+### 8. Global Leaderboard (Ranks)
 <div align="center">
   <img src="foto/IMG_8251.PNG" width="300" />
 </div>
-The core exploration hub. Powered by `Leaflet.js` and real-time Geolocation tracking, players see themselves on a stylized dark-mode map of the real world. MonAnimals dynamically spawn around the player's physical location within a 2km radius. If you want to catch them, you literally have to walk to them!
+Compete globally! The leaderboard tracks the top wallets based on Total Score, Catches, and Battles Won. Do you have what it takes to be the #1 Monad Trainer?
 
 <br/>
 
-### 6. Entering AR Catch Mode
+### 9. Player Profile & Stats
 <div align="center">
   <img src="foto/IMG_8252.jpg" width="300" />
 </div>
-Once a player taps a MonAnimal on the map, they enter Catch Mode. The device's camera opens as the background. Using the **DeviceOrientation API (Gyroscope)**, the MonAnimal physically shifts on the screen as you tilt and move your phone, creating a stunning Augmented Reality tracking effect.
+The command center. View your connected Wallet Address, live MON balance, Total Score, MonAnimals Caught, and your Battle Win/Loss ratio. 
 
 <br/>
 
-### 7. The Micro-Transaction Throw
+### 10. The Monad Store & Equipment
 <div align="center">
   <img src="foto/IMG_8254.jpg" width="300" />
 </div>
-This is where Monad shines. Players swipe their finger UP to throw a physical Monad Coin at the beast. The speed, velocity, and X/Y drift of the swipe are calculated to create a 3D physics throw. At the exact moment of the throw, a `0.01 MON` transaction is signed and executed instantly.
+Spend your MON to upgrade your MonAnimals! Buy Hats (+10 Power), Swords (+25 Power), or raw Energy (+20 Power) using lightning-fast micro-transactions. This is where the in-game economy truly shines.
 
 <br/>
 
-### 8. The Catch Result
+### 11. Recent Activity Feed
 <div align="center">
   <img src="foto/IMG_8255.jpg" width="300" />
 </div>
-The adrenaline rush! Did it escape, or did you catch it?
-- **Success:** The MonAnimal is yours. If it's a duplicate, it acts as a "Power-Up" to your existing NFT.
-- **Escape:** The monster eats your MON and flees! But don't worry, your catch probability increases by +25% for the next attempt.
+A beautiful, scrollable log of your entire journey. Track exactly when you won battles, when you caught that Epic Salmonad, and what power-ups you purchased.
 
 <br/>
 
-### 9. Your NFT Pokedex (Collection)
-<div align="center">
-  <img src="foto/IMG_8257.PNG" width="300" />
-</div>
-A gorgeous, scrollable grid of your hard-earned assets. Each MonAnimal has unique stats (Base Power, HP, Speed) and falls into a rarity tier (Common, Uncommon, Rare, Legendary). The UI glows based on the rarity of the collected NFT.
-
-<br/>
-
-### 10. Player Profile & Stats
-<div align="center">
-  <img src="foto/IMG_8258.PNG" width="300" />
-</div>
-The command center. Players can view their connected Wallet Address, live MON balance, Total Catches, and their overall Trainer Score. This page is designed to make the player feel rewarded for their exploration.
-
-<br/>
-
-### 11. SocialFi & Viral Quests
-<div align="center">
-  <img src="foto/IMG_8259.PNG" width="300" />
-</div>
-We built viral marketing directly into the game mechanics. Players can connect their X (Twitter) handles and complete "Social Quests" (like tweeting about their catches with the `@monad_dev` tag) to earn massive bonus scores. This creates an organic, self-sustaining growth loop for the application.
-
-<br/>
-
-### 12. Pitch-Perfect Viral QR Sharing
+### 12. SocialFi Quests & Score Conversion
 <div align="center">
   <img src="foto/IMG_8260.jpg" width="300" />
 </div>
-Built specifically with the Hackathon presentation in mind! When the presenter clicks "Share App" on stage, a massive QR code fills the screen. The audience can scan it with their phones, instantly load the DApp, connect their wallets, and start catching MonAnimals in the auditorium in seconds!
+We built viral marketing directly into the game. Complete "Social Quests" (like connecting X/Twitter or tweeting about the game) to earn bonus scores. Even better? Convert your hard-earned in-game Score directly back into Testnet MON!
 
 ---
 
