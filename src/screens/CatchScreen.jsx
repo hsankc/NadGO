@@ -73,18 +73,32 @@ export default function CatchScreen({ spawn, game, wallet, onClose }) {
     }
   };
 
+  const lastMoveY = useRef(0);
+  const velocityY = useRef(0);
+  const lastMoveX = useRef(0);
+
   const handlePointerDown = useCallback((e) => {
     if (phase !== 'ready') return;
     setIsDragging(true);
-    startY.current = e.clientY || e.touches?.[0]?.clientY || 0;
+    const clientY = e.clientY || e.touches?.[0]?.clientY || 0;
+    const clientX = e.clientX || e.touches?.[0]?.clientX || 0;
+    startY.current = clientY;
+    lastMoveY.current = clientY;
+    lastMoveX.current = clientX;
+    velocityY.current = 0;
   }, [phase]);
 
   const handlePointerMove = useCallback((e) => {
     if (!isDragging) return;
     const currentY = e.clientY || e.touches?.[0]?.clientY || 0;
+    const currentX = e.clientX || e.touches?.[0]?.clientX || 0;
     const deltaY = startY.current - currentY;
+    // Track velocity for wobble intensity
+    velocityY.current = lastMoveY.current - currentY;
+    const driftX = (currentX - lastMoveX.current) * 0.3;
+    lastMoveY.current = currentY;
     if (deltaY > 0) {
-      setCoinPos({ x: 0, y: -deltaY * 0.5 });
+      setCoinPos({ x: driftX, y: -deltaY * 0.5 });
     }
   }, [isDragging]);
 
@@ -394,8 +408,12 @@ export default function CatchScreen({ spawn, game, wallet, onClose }) {
               left: 'auto',
               bottom: 'auto',
               marginTop: 32,
-              transform: `translateY(${coinPos.y}px)`,
-              transition: isDragging ? 'none' : 'transform 0.3s ease',
+              transform: isDragging
+                ? `translateY(${coinPos.y}px) translateX(${coinPos.x}px) rotateX(${Math.min(Math.abs(coinPos.y) * 0.8, 60)}deg) rotateZ(${coinPos.x * 2}deg) scale(${Math.max(1 + coinPos.y * 0.002, 0.4)})`
+                : `translateY(${coinPos.y}px) scale(1)`,
+              transition: isDragging ? 'none' : 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
+              transformStyle: 'preserve-3d',
+              perspective: 800,
             }}
           >
             ◇
