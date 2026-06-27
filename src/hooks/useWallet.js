@@ -82,6 +82,8 @@ export function useWallet() {
                 params: [{ chainId: MONAD_TESTNET.chainIdHex }],
               });
               setChainId(MONAD_TESTNET.chainId);
+              // Refetch balance on the new chain
+              fetchBalance(prov, accounts[0]);
             } catch (switchError) {
               if (switchError.code === 4902) {
                 await window.ethereum.request({
@@ -97,6 +99,7 @@ export function useWallet() {
                   ],
                 });
                 setChainId(MONAD_TESTNET.chainId);
+                fetchBalance(prov, accounts[0]);
               }
             }
           }
