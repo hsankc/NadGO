@@ -2,14 +2,17 @@ import { useState, useEffect } from 'react';
 import { Scanner } from '@yudiel/react-qr-scanner';
 import { ethers } from 'ethers';
 import { MONANIMALS } from '../config/monanimals';
+import { QRCodeSVG } from 'qrcode.react';
 
 const TREASURY_ADDRESS = "0x742d35Cc6634C0532925a3b844Bc454e4438f44e";
+const APP_URL = "https://nad-go.vercel.app";
 
 export default function ProfileScreen({ wallet, game }) {
   const [isScanning, setIsScanning] = useState(false);
   const [claimedPower, setClaimedPower] = useState(() => localStorage.getItem('nadgo-claimed-power') === 'true');
   const [claimedMon, setClaimedMon] = useState(() => localStorage.getItem('nadgo-claimed-mon') === 'true');
   const [selectedStoreMon, setSelectedStoreMon] = useState('');
+  const [showQR, setShowQR] = useState(false);
 
   const { playerStats, badges, addBadge, claimBadgePower, claimBadgeMon } = game;
 
@@ -134,6 +137,98 @@ export default function ProfileScreen({ wallet, game }) {
           <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>Battle Losses</div>
         </div>
       </div>
+
+      {/* Social Quests Section */}
+      <div style={{ marginBottom: 32 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+          <h3 style={{ fontSize: 18, color: 'var(--text-secondary)', margin: 0 }}>Social Quests 🏅</h3>
+          <button className="btn btn-secondary" onClick={() => setShowQR(true)} style={{ padding: '6px 14px', fontSize: 13 }}>
+            📲 Share App
+          </button>
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          {/* Wallet Connected */}
+          <div className="glass-card" style={{ padding: 14, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <span style={{ fontSize: 20 }}>👛</span>
+              <div>
+                <div style={{ fontWeight: 600, fontSize: 14 }}>Connect Wallet</div>
+                <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>+20 Score</div>
+              </div>
+            </div>
+            <span style={{ color: wallet.isConnected ? 'var(--success)' : 'var(--text-muted)', fontWeight: 700 }}>
+              {wallet.isConnected ? '✅ Done' : '⏳ Pending'}
+            </span>
+          </div>
+
+          {/* Connect X */}
+          <div className="glass-card" style={{ padding: 14 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <span style={{ fontSize: 20 }}>🐦</span>
+                <div>
+                  <div style={{ fontWeight: 600, fontSize: 14 }}>Connect X (Twitter)</div>
+                  <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>+20 Score</div>
+                </div>
+              </div>
+              {game.socialQuests.xConnected ? (
+                <span style={{ color: 'var(--success)', fontWeight: 700 }}>✅ @{game.socialQuests.xUsername}</span>
+              ) : (
+                <button className="btn btn-primary" style={{ padding: '6px 12px', fontSize: 12 }} onClick={() => {
+                  const username = prompt("Enter your X (Twitter) username:");
+                  if (username && username.trim()) {
+                    game.connectX(username.trim().replace('@', ''));
+                  }
+                }}>
+                  Connect
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Tweet Quest */}
+          <div className="glass-card" style={{ padding: 14, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <span style={{ fontSize: 20 }}>📣</span>
+              <div>
+                <div style={{ fontWeight: 600, fontSize: 14 }}>Share on X</div>
+                <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>+20 Score</div>
+              </div>
+            </div>
+            {game.socialQuests.tweeted ? (
+              <span style={{ color: 'var(--success)', fontWeight: 700 }}>✅ Done</span>
+            ) : (
+              <div style={{ display: 'flex', gap: 8 }}>
+                <button className="btn btn-secondary" style={{ padding: '6px 10px', fontSize: 11 }} onClick={() => {
+                  const tweetText = encodeURIComponent("I'm playing NadGO — a Pokémon GO style game on Monad blockchain! Catch MonAnimals, battle & earn! 🎮⚡\n\n#Monad #NadGO #AnkaraHackathon @moaborz");
+                  window.open(`https://twitter.com/intent/tweet?text=${tweetText}`, '_blank');
+                }}>
+                  Tweet 🐦
+                </button>
+                <button className="btn btn-primary" style={{ padding: '6px 10px', fontSize: 11 }} onClick={() => game.claimTweet()}>
+                  Done ✓
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* QR Code Modal */}
+      {showQR && (
+        <div style={{ position: 'fixed', inset: 0, zIndex: 999, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(10px)' }} onClick={() => setShowQR(false)}>
+          <div className="glass-card" style={{ padding: 32, textAlign: 'center', maxWidth: 320 }} onClick={e => e.stopPropagation()}>
+            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 20, marginBottom: 4 }}>Join NadGO!</h3>
+            <p style={{ color: 'var(--text-muted)', fontSize: 12, marginBottom: 20 }}>Scan to play on your phone</p>
+            <div style={{ background: 'white', padding: 16, borderRadius: 12, display: 'inline-block', marginBottom: 16 }}>
+              <QRCodeSVG value={APP_URL} size={200} level="H" />
+            </div>
+            <p style={{ fontSize: 11, color: 'var(--text-muted)', wordBreak: 'break-all' }}>{APP_URL}</p>
+            <button className="btn btn-primary btn-full" onClick={() => setShowQR(false)} style={{ marginTop: 16 }}>Close</button>
+          </div>
+        </div>
+      )}
 
       {/* Monad Store Section */}
       <div style={{ marginBottom: 32 }}>

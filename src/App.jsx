@@ -60,7 +60,7 @@ export default function App() {
 
   const wallet = useWallet();
   const geo = useGeolocation();
-  const game = useGameState();
+  const game = useGameState(wallet.address);
 
   useEffect(() => {
     document.body.setAttribute('data-theme', theme);

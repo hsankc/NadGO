@@ -28,14 +28,27 @@ export default function OnboardingScreen({ wallet, onComplete }) {
   const current = steps[step];
 
   const handleNext = () => {
+    // Block proceeding from wallet step if not connected
+    if (current.isWalletStep && !wallet.isConnected) {
+      alert("Please connect your wallet to continue!");
+      return;
+    }
     if (step < steps.length - 1) {
       setStep(step + 1);
     } else {
+      if (!wallet.isConnected) {
+        alert("Please connect your wallet first!");
+        return;
+      }
       onComplete();
     }
   };
 
   const handleSkip = () => {
+    if (!wallet.isConnected) {
+      alert("Please connect your wallet to play NadGO!");
+      return;
+    }
     onComplete();
   };
 

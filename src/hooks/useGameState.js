@@ -52,14 +52,15 @@ function generateSpawns(center, count) {
   return spawns;
 }
 
-export function useGameState() {
+export function useGameState(walletAddress) {
+  // Storage key helper — each wallet gets its own data
+  const key = useCallback((name) => {
+    const prefix = walletAddress ? `nadgo-${walletAddress.slice(0,8)}-` : 'nadgo-';
+    return `${prefix}${name}`;
+  }, [walletAddress]);
+
   // Collection of caught MonAnimals
-  const [collection, setCollection] = useState(() => {
-    try {
-      const saved = localStorage.getItem('nadgo-collection');
-      return saved ? JSON.parse(saved) : [];
-    } catch { return []; }
-  });
+  const [collection, setCollection] = useState([]);
 
   // Active map spawns
   const [spawns, setSpawns] = useState(() =>
@@ -67,57 +68,67 @@ export function useGameState() {
   );
 
   // Battle history
-  const [battleHistory, setBattleHistory] = useState(() => {
-    try {
-      const saved = localStorage.getItem('nadgo-battles');
-      return saved ? JSON.parse(saved) : [];
-    } catch { return []; }
-  });
+  const [battleHistory, setBattleHistory] = useState([]);
 
   // Badges
-  const [badges, setBadges] = useState(() => {
-    try {
-      const saved = localStorage.getItem('nadgo-badges');
-      return saved ? JSON.parse(saved) : [];
-    } catch { return []; }
-  });
+  const [badges, setBadges] = useState([]);
 
   // Player stats
-  const [playerStats, setPlayerStats] = useState(() => {
-    try {
-      const saved = localStorage.getItem('nadgo-stats');
-      return saved ? JSON.parse(saved) : {
-        totalCatches: 0,
-        totalBattles: 0,
-        wins: 0,
-        losses: 0,
-        zonesVisited: [],
-        score: 0,
-      };
-    } catch {
-      return { totalCatches: 0, totalBattles: 0, wins: 0, losses: 0, zonesVisited: [], score: 0 };
-    }
+  const [playerStats, setPlayerStats] = useState({
+    totalCatches: 0, totalBattles: 0, wins: 0, losses: 0, zonesVisited: [], score: 0
   });
 
   // Activity feed
   const [activityFeed, setActivityFeed] = useState([]);
 
+  // Social quests
+  const [socialQuests, setSocialQuests] = useState({ xConnected: false, xUsername: '', tweeted: false, walletConnected: false });
+
+  // Load data when walletAddress changes
+  useEffect(() => {
+    if (!walletAddress) return;
+    try {
+      const c = localStorage.getItem(key('collection'));
+      setCollection(c ? JSON.parse(c) : []);
+      const b = localStorage.getItem(key('battles'));
+      setBattleHistory(b ? JSON.parse(b) : []);
+      const bg = localStorage.getItem(key('badges'));
+      setBadges(bg ? JSON.parse(bg) : []);
+      const s = localStorage.getItem(key('stats'));
+      setPlayerStats(s ? JSON.parse(s) : { totalCatches: 0, totalBattles: 0, wins: 0, losses: 0, zonesVisited: [], score: 0 });
+      const sq = localStorage.getItem(key('social'));
+      setSocialQuests(sq ? JSON.parse(sq) : { xConnected: false, xUsername: '', tweeted: false, walletConnected: true });
+      setActivityFeed([]);
+    } catch (e) {
+      console.warn('Failed to load user data', e);
+    }
+  }, [walletAddress, key]);
+
   // Save to localStorage
   useEffect(() => {
-    localStorage.setItem('nadgo-collection', JSON.stringify(collection));
-  }, [collection]);
+    if (!walletAddress) return;
+    localStorage.setItem(key('collection'), JSON.stringify(collection));
+  }, [collection, walletAddress, key]);
 
   useEffect(() => {
-    localStorage.setItem('nadgo-battles', JSON.stringify(battleHistory));
-  }, [battleHistory]);
+    if (!walletAddress) return;
+    localStorage.setItem(key('battles'), JSON.stringify(battleHistory));
+  }, [battleHistory, walletAddress, key]);
 
   useEffect(() => {
-    localStorage.setItem('nadgo-stats', JSON.stringify(playerStats));
-  }, [playerStats]);
+    if (!walletAddress) return;
+    localStorage.setItem(key('stats'), JSON.stringify(playerStats));
+  }, [playerStats, walletAddress, key]);
 
   useEffect(() => {
-    localStorage.setItem('nadgo-badges', JSON.stringify(badges));
-  }, [badges]);
+    if (!walletAddress) return;
+    localStorage.setItem(key('badges'), JSON.stringify(badges));
+  }, [badges, walletAddress, key]);
+
+  useEffect(() => {
+    if (!walletAddress) return;
+    localStorage.setItem(key('social'), JSON.stringify(socialQuests));
+  }, [socialQuests, walletAddress, key]);
 
   const addBadge = useCallback((badgeId) => {
     setBadges((prev) => {
@@ -416,6 +427,25 @@ export function useGameState() {
     return all;
   }, [playerStats]);
 
+  // Social quest functions
+  const connectX = useCallback((username) => {
+    setSocialQuests(prev => {
+      if (prev.xConnected) return prev;
+      return { ...prev, xConnected: true, xUsername: username };
+    });
+    setPlayerStats(prev => ({ ...prev, score: prev.score + 20 }));
+    addActivity(`Connected X account @${username}! +20 Score 🐦`);
+  }, []);
+
+  const claimTweet = useCallback(() => {
+    setSocialQuests(prev => {
+      if (prev.tweeted) return prev;
+      return { ...prev, tweeted: true };
+    });
+    setPlayerStats(prev => ({ ...prev, score: prev.score + 20 }));
+    addActivity('Shared NadGO on X! +20 Score 📣');
+  }, []);
+
   return {
     collection,
     spawns,
@@ -423,6 +453,7 @@ export function useGameState() {
     playerStats,
     activityFeed,
     badges,
+    socialQuests,
     catchMonAnimal,
     feedMonAnimal,
     doBattle,
@@ -435,5 +466,7 @@ export function useGameState() {
     buyEquipment,
     buyPower,
     convertScoreToMon,
+    connectX,
+    claimTweet,
   };
 }
