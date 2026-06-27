@@ -89,7 +89,7 @@ export default function CatchScreen({ spawn, game, wallet, onClose }) {
   }, [phase]);
 
   const handlePointerMove = useCallback((e) => {
-    if (!isDragging) return;
+    if (!isDragging || phase !== 'ready') return;
     const currentY = e.clientY || e.touches?.[0]?.clientY || 0;
     const currentX = e.clientX || e.touches?.[0]?.clientX || 0;
     const deltaY = startY.current - currentY;
@@ -100,7 +100,7 @@ export default function CatchScreen({ spawn, game, wallet, onClose }) {
     if (deltaY > 0) {
       setCoinPos({ x: driftX, y: -deltaY * 0.5 });
     }
-  }, [isDragging]);
+  }, [isDragging, phase]);
 
   const [feedAttempts, setFeedAttempts] = useState(0);
 
@@ -120,6 +120,7 @@ export default function CatchScreen({ spawn, game, wallet, onClose }) {
       }
 
       try {
+        setPhase('pending'); // Prevent further dragging while tx is processing
         // Send 0.01 MON to treasury before catching
         const tx = await wallet.signer.sendTransaction({
           to: TREASURY_ADDRESS,
@@ -140,12 +141,14 @@ export default function CatchScreen({ spawn, game, wallet, onClose }) {
         setTimeout(() => {
           const isFirstCatch = game.playerStats.totalCatches === 0;
           const result = game.catchMonAnimal(spawn.id, isFirstCatch, currentAttempt);
+          console.log("CATCH RESULT:", result, "SPAWN ID:", spawn.id);
           setCatchResult(result);
           setPhase('result');
           setThrowAnim(false);
         }, 800);
       } catch (err) {
         console.error("Transaction failed or rejected", err);
+        setPhase('ready'); // Revert back so they can try again
         setCoinPos({ x: 0, y: 0 }); // reset coin position
       }
     } else {
@@ -301,9 +304,7 @@ export default function CatchScreen({ spawn, game, wallet, onClose }) {
 
       {/* Catch result */}
       {phase === 'result' && catchResult && (
-        <div className={`catch-result ${catchResult.success ? 'catch-result-success' : 'catch-result-fail'}`}
-          style={{ position: 'relative', zIndex: 5 }}
-        >
+        <div className={`catch-result ${catchResult.success ? 'catch-result-success' : 'catch-result-fail'}`}>
           <img
             src={mon.image}
             alt={mon.name}
