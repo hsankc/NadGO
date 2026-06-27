@@ -5,6 +5,7 @@
   <p>Built exclusively for the <b>Ankara Hackathon</b> ⚡</p>
 
   <div>
+    <p style="font-size: 18px;"><b>🟢 Play Live Now:</b> <a href="https://monadgo.vercel.app/">https://monadgo.vercel.app/</a></p>
     <a href="https://monadgo.vercel.app/" target="_blank">
       <img src="https://img.shields.io/badge/PLAY_LIVE_DEMO-0D0620?style=for-the-badge&logo=vercel&logoColor=white" alt="Live Demo" />
     </a>
