@@ -5,7 +5,7 @@ import { MONANIMALS } from '../config/monanimals';
 import { QRCodeSVG } from 'qrcode.react';
 
 const TREASURY_ADDRESS = "0x742d35Cc6634C0532925a3b844Bc454e4438f44e";
-const APP_URL = "https://nad-go.vercel.app";
+const APP_URL = "https://monadgo.vercel.app";
 
 export default function ProfileScreen({ wallet, game }) {
   const [isScanning, setIsScanning] = useState(false);

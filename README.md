@@ -118,7 +118,7 @@ Here is the complete user journey of Monad Go, from onboarding to building your 
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/hsankc/NadGO.git
+git clone https://github.com/hsankc/MonadGO.git
 ```
 
 2. Install dependencies:
